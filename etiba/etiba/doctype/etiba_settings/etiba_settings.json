@@ -1,0 +1,68 @@
+{
+ "actions": [],
+ "creation": "2026-08-19 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "print_service_url",
+  "column_break_1",
+  "cantidad_por_defecto",
+  "section_break_1",
+  "formato_por_defecto"
+ ],
+ "fields": [
+  {
+   "default": "http://localhost:5001/ImpresionEtiquetas",
+   "description": "URL local del servicio/puente de impresion (bridge) que recibe el ZPL/TSPL y lo envia a la impresora. Corre en el equipo del usuario, no en este servidor.",
+   "fieldname": "print_service_url",
+   "fieldtype": "Data",
+   "label": "URL del servicio de impresion",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "cantidad_por_defecto",
+   "fieldtype": "Int",
+   "label": "Cantidad por defecto"
+  },
+  {
+   "fieldname": "section_break_1",
+   "fieldtype": "Section Break",
+   "label": "Formato de respaldo"
+  },
+  {
+   "description": "Se usa solo cuando el grupo del producto no coincide con ningun formato activo (ver tabla \"Grupos\" en cada Etiba Formato).",
+   "fieldname": "formato_por_defecto",
+   "fieldtype": "Link",
+   "label": "Formato por defecto",
+   "options": "Etiba Formato"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-08-19 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "eTIBA",
+ "name": "Etiba Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

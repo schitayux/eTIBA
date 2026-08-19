@@ -1,0 +1,133 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:nombre",
+ "creation": "2026-08-19 00:00:00.000000",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "nombre",
+  "activo",
+  "identificador_tipo",
+  "lenguaje",
+  "grupos_section",
+  "grupos",
+  "variables_section",
+  "variable2_campos",
+  "variable2_separador",
+  "ayuda_variables",
+  "codigo_section",
+  "codigo_zpl",
+  "codigo_tspl"
+ ],
+ "fields": [
+  {
+   "fieldname": "nombre",
+   "fieldtype": "Data",
+   "label": "Nombre",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "activo",
+   "fieldtype": "Check",
+   "label": "Activo"
+  },
+  {
+   "default": "Serie",
+   "description": "Que valor llena $$VARIABLE1$$: el numero de Serial No (Serie) o el codigo del Item (Codigo).",
+   "fieldname": "identificador_tipo",
+   "fieldtype": "Select",
+   "label": "Identificador",
+   "options": "Serie\nCódigo",
+   "reqd": 1
+  },
+  {
+   "default": "ZPL",
+   "description": "Que campo de codigo se envia al servicio de impresion.",
+   "fieldname": "lenguaje",
+   "fieldtype": "Select",
+   "label": "Lenguaje de impresion",
+   "options": "ZPL\nTSPL",
+   "reqd": 1
+  },
+  {
+   "fieldname": "grupos_section",
+   "fieldtype": "Section Break",
+   "label": "Grupos de producto asociados"
+  },
+  {
+   "description": "Item Groups que deben sugerir este formato automaticamente. Un mismo formato puede cubrir varios grupos.",
+   "fieldname": "grupos",
+   "fieldtype": "Table",
+   "label": "Grupos",
+   "options": "Etiba Formato Grupo"
+  },
+  {
+   "fieldname": "variables_section",
+   "fieldtype": "Section Break",
+   "label": "Variable 2 (linea opcional)"
+  },
+  {
+   "description": "Fieldnames del Item (separados por coma) cuyos valores llenan $$VARIABLE2$$. Ej: custom_esfera,custom_cilindro o item_code. Vacio = $$VARIABLE2$$ queda en blanco.",
+   "fieldname": "variable2_campos",
+   "fieldtype": "Small Text",
+   "label": "Campos de Item para Variable 2"
+  },
+  {
+   "default": "/",
+   "fieldname": "variable2_separador",
+   "fieldtype": "Data",
+   "label": "Separador entre campos"
+  },
+  {
+   "fieldname": "ayuda_variables",
+   "fieldtype": "HTML",
+   "label": "Ayuda",
+   "options": "<p><b>$$VARIABLE1$$</b>: valor segun \"Identificador\" (serie o codigo) &nbsp;|&nbsp; <b>$$VARIABLE2$$</b>: segun \"Campos de Item para Variable 2\" &nbsp;|&nbsp; <b>$$VARIABLE3$$</b>: nombre del producto (item_name)</p>"
+  },
+  {
+   "fieldname": "codigo_section",
+   "fieldtype": "Section Break",
+   "label": "Codigo de la etiqueta"
+  },
+  {
+   "fieldname": "codigo_zpl",
+   "fieldtype": "Long Text",
+   "label": "Codigo ZPL"
+  },
+  {
+   "fieldname": "codigo_tspl",
+   "fieldtype": "Long Text",
+   "label": "Codigo TSPL"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-08-19 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "eTIBA",
+ "name": "Etiba Formato",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
