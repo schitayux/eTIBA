@@ -1,21 +1,34 @@
-frappe.listview_settings["Serial No"] = frappe.listview_settings["Serial No"] || {};
-
 (function () {
-	const original_onload = frappe.listview_settings["Serial No"].onload;
+	function agregar_boton(listview) {
+		listview.page.add_inner_button(__("e-Imprimir"), function () {
+			etiba.imprimir_etiquetas_lote(listview);
+		});
+	}
 
-	frappe.listview_settings["Serial No"].onload = function (listview) {
-		if (original_onload) {
-			original_onload(listview);
-		}
+	function envolver(settings) {
+		if (!settings || settings.__etiba_wrapped) return settings;
+		const original_onload = settings.onload;
+		settings.onload = function (listview) {
+			if (original_onload) original_onload(listview);
+			agregar_boton(listview);
+		};
+		settings.__etiba_wrapped = true;
+		return settings;
+	}
 
-		listview.page.add_inner_button(
-			__("Imprimir con Formato"),
-			function () {
-				etiba.imprimir_etiquetas_lote(listview);
-			},
-			__("Herramientas")
-		);
-	};
+	// Mismo problema que en item_list.js: un Client Script viejo puede
+	// reasignar frappe.listview_settings["Serial No"] completo despues
+	// de que este archivo corra. defineProperty lo intercepta.
+	let current = envolver(frappe.listview_settings["Serial No"] || {});
+	Object.defineProperty(frappe.listview_settings, "Serial No", {
+		configurable: true,
+		get() {
+			return current;
+		},
+		set(value) {
+			current = envolver(value);
+		},
+	});
 })();
 
 frappe.provide("etiba");

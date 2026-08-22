@@ -1,21 +1,36 @@
-frappe.listview_settings["Item"] = frappe.listview_settings["Item"] || {};
-
 (function () {
-	const original_onload = frappe.listview_settings["Item"].onload;
+	function agregar_boton(listview) {
+		listview.page.add_inner_button(__("e-Imprimir"), function () {
+			etiba.imprimir_etiquetas_item(listview);
+		});
+	}
 
-	frappe.listview_settings["Item"].onload = function (listview) {
-		if (original_onload) {
-			original_onload(listview);
-		}
+	function envolver(settings) {
+		if (!settings || settings.__etiba_wrapped) return settings;
+		const original_onload = settings.onload;
+		settings.onload = function (listview) {
+			if (original_onload) original_onload(listview);
+			agregar_boton(listview);
+		};
+		settings.__etiba_wrapped = true;
+		return settings;
+	}
 
-		listview.page.add_inner_button(
-			__("Imprimir Etiquetas"),
-			function () {
-				etiba.imprimir_etiquetas_item(listview);
-			},
-			__("Herramientas")
-		);
-	};
+	// Un Client Script viejo (guardado en BD) puede reasignar
+	// frappe.listview_settings["Item"] por completo DESPUES de que
+	// este archivo se evalue (los hooks de apps siempre corren antes
+	// que los Client Scripts). defineProperty intercepta esa
+	// reasignacion para envolverla en vez de perder el boton de eTIBA.
+	let current = envolver(frappe.listview_settings["Item"] || {});
+	Object.defineProperty(frappe.listview_settings, "Item", {
+		configurable: true,
+		get() {
+			return current;
+		},
+		set(value) {
+			current = envolver(value);
+		},
+	});
 })();
 
 frappe.provide("etiba");

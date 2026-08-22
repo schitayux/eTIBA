@@ -87,7 +87,7 @@
    "fieldname": "ayuda_variables",
    "fieldtype": "HTML",
    "label": "Ayuda",
-   "options": "<p><b>$$VARIABLE1$$</b>: valor segun \"Identificador\" (serie o codigo) &nbsp;|&nbsp; <b>$$VARIABLE2$$</b>: segun \"Campos de Item para Variable 2\" &nbsp;|&nbsp; <b>$$VARIABLE3$$</b>: nombre del producto (item_name)</p>"
+   "options": "<p><b>$$VARIABLE1$$</b>: valor segun \"Identificador\" (serie o codigo) &nbsp;|&nbsp; <b>$$VARIABLE2$$</b>: segun \"Campos de Item para Variable 2\" &nbsp;|&nbsp; <b>$$VARIABLE3$$</b> / <b>$$VARIABLE3_L2$$</b>: nombre del producto (item_name), partido automaticamente en 2 lineas de ~22 caracteres si no cabe en una</p>"
   },
   {
    "fieldname": "codigo_section",

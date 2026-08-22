@@ -64,6 +64,22 @@ def _resolver_variable2(codigo_producto, formato_doc):
 	return (formato_doc.variable2_separador or "/").join(valores)
 
 
+def _dividir_descripcion(texto, ancho=22):
+	"""Parte una descripcion larga en 2 lineas de max 'ancho' caracteres, cortando en un espacio si se puede."""
+	texto = (texto or "").strip()
+	if len(texto) <= ancho:
+		return texto, ""
+
+	corte = texto.rfind(" ", 0, ancho + 1)
+	if corte <= 0:
+		corte = ancho
+	linea1 = texto[:corte].strip()
+	resto = texto[corte:].strip()
+	if len(resto) > ancho:
+		resto = resto[: ancho - 3].strip() + "..."
+	return linea1, resto
+
+
 def _plantilla_de(formato_doc):
 	plantilla = formato_doc.codigo_tspl if formato_doc.lenguaje == "TSPL" else formato_doc.codigo_zpl
 	if not plantilla:
@@ -83,6 +99,7 @@ def obtener_valores(identificador, formato, codigo_producto, cantidad=1):
 	plantilla = _plantilla_de(formato_doc)
 	item_name = frappe.db.get_value("Item", codigo_producto, "item_name") or ""
 	variable2 = _resolver_variable2(codigo_producto, formato_doc)
+	desc_l1, desc_l2 = _dividir_descripcion(item_name)
 
 	cantidad = int(cantidad or 1)
 	etiquetas = []
@@ -90,7 +107,8 @@ def obtener_valores(identificador, formato, codigo_producto, cantidad=1):
 		zpl = plantilla.strip()
 		zpl = zpl.replace("$$VARIABLE1$$", str(identificador))
 		zpl = zpl.replace("$$VARIABLE2$$", str(variable2))
-		zpl = zpl.replace("$$VARIABLE3$$", str(item_name))
+		zpl = zpl.replace("$$VARIABLE3_L2$$", desc_l2)
+		zpl = zpl.replace("$$VARIABLE3$$", desc_l1)
 		etiquetas.append(zpl)
 
 	return _limpiar_zpl("\n".join(etiquetas))
