@@ -131,7 +131,7 @@ def obtener_valores(identificador, formato, codigo_producto, cantidad=1):
 	plantilla = _plantilla_de(formato_doc)
 	item_name = frappe.db.get_value("Item", codigo_producto, "item_name") or ""
 	variable2 = _resolver_variable2(codigo_producto, formato_doc)
-	desc_l1, desc_l2 = _dividir_descripcion(item_name)
+	desc_l1, desc_l2 = _dividir_descripcion(item_name, int(formato_doc.descripcion_ancho or 22))
 
 	cantidad = int(cantidad or 1)
 	zpl = plantilla.strip()

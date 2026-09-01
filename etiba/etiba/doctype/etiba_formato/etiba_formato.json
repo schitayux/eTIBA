@@ -17,6 +17,7 @@
   "variables_section",
   "variable2_campos",
   "variable2_separador",
+  "descripcion_ancho",
   "ayuda_variables",
   "codigo_section",
   "codigo_zpl",
@@ -84,10 +85,17 @@
    "label": "Separador entre campos"
   },
   {
+   "default": "22",
+   "description": "Caracteres por linea al partir el nombre del producto en $$VARIABLE3$$ / $$VARIABLE3_L2$$. Depende del ancho util de la etiqueta y del tamano de letra de la plantilla: subir la letra obliga a bajar este numero.",
+   "fieldname": "descripcion_ancho",
+   "fieldtype": "Int",
+   "label": "Ancho de descripcion (caracteres por linea)"
+  },
+  {
    "fieldname": "ayuda_variables",
    "fieldtype": "HTML",
    "label": "Ayuda",
-   "options": "<p><b>$$VARIABLE1$$</b>: valor segun \"Identificador\" (serie o codigo) &nbsp;|&nbsp; <b>$$VARIABLE2$$</b>: segun \"Campos de Item para Variable 2\" &nbsp;|&nbsp; <b>$$VARIABLE3$$</b> / <b>$$VARIABLE3_L2$$</b>: nombre del producto (item_name), partido automaticamente en 2 lineas de ~22 caracteres si no cabe en una</p>"
+   "options": "<p><b>$$VARIABLE1$$</b>: valor segun \"Identificador\" (serie o codigo) &nbsp;|&nbsp; <b>$$VARIABLE2$$</b>: segun \"Campos de Item para Variable 2\" &nbsp;|&nbsp; <b>$$VARIABLE3$$</b> / <b>$$VARIABLE3_L2$$</b>: nombre del producto (item_name), partido automaticamente en 2 lineas segun \"Ancho de descripcion\" si no cabe en una</p>"
   },
   {
    "fieldname": "codigo_section",
@@ -107,7 +115,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-08-19 00:00:00.000000",
+ "modified": "2026-09-01 00:00:00.000000",
  "modified_by": "Administrator",
  "module": "eTIBA",
  "name": "Etiba Formato",
