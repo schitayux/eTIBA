@@ -1,3 +1,5 @@
+import re
+
 import frappe
 from frappe import _
 
@@ -80,6 +82,36 @@ def _dividir_descripcion(texto, ancho=22):
 	return linea1, resto
 
 
+def _aplicar_cantidad(codigo, lenguaje, cantidad):
+	"""Pide 'cantidad' copias a la impresora en vez de repetir la etiqueta N veces.
+
+	El servicio de impresion local solo procesa el primer bloque cuando le llegan
+	varias etiquetas concatenadas, asi que la repeticion la hace el equipo:
+	^PQ en ZPL, el segundo argumento de PRINT en TSPL.
+	"""
+	if cantidad <= 1:
+		return codigo
+
+	if lenguaje == "TSPL":
+		nuevo, n = re.subn(
+			r"(?im)^([ \t]*PRINT[ \t]+\d+)[ \t]*(?:,[ \t]*\d+)?[ \t]*$",
+			r"\g<1>," + str(cantidad),
+			codigo,
+		)
+		return nuevo if n else codigo
+
+	if re.search(r"\^PQ\d", codigo, re.IGNORECASE):
+		return re.sub(r"(?i)\^PQ\d+(?:,\d+)*", "^PQ{0}".format(cantidad), codigo, count=1)
+
+	ultimo = None
+	for ultimo in re.finditer(r"\^XZ", codigo, re.IGNORECASE):
+		pass
+	if ultimo is None:
+		return codigo
+
+	return codigo[: ultimo.start()] + "^PQ{0}\n".format(cantidad) + codigo[ultimo.start() :]
+
+
 def _plantilla_de(formato_doc):
 	plantilla = formato_doc.codigo_tspl if formato_doc.lenguaje == "TSPL" else formato_doc.codigo_zpl
 	if not plantilla:
@@ -102,16 +134,13 @@ def obtener_valores(identificador, formato, codigo_producto, cantidad=1):
 	desc_l1, desc_l2 = _dividir_descripcion(item_name)
 
 	cantidad = int(cantidad or 1)
-	etiquetas = []
-	for _i in range(cantidad):
-		zpl = plantilla.strip()
-		zpl = zpl.replace("$$VARIABLE1$$", str(identificador))
-		zpl = zpl.replace("$$VARIABLE2$$", str(variable2))
-		zpl = zpl.replace("$$VARIABLE3_L2$$", desc_l2)
-		zpl = zpl.replace("$$VARIABLE3$$", desc_l1)
-		etiquetas.append(zpl)
+	zpl = plantilla.strip()
+	zpl = zpl.replace("$$VARIABLE1$$", str(identificador))
+	zpl = zpl.replace("$$VARIABLE2$$", str(variable2))
+	zpl = zpl.replace("$$VARIABLE3_L2$$", desc_l2)
+	zpl = zpl.replace("$$VARIABLE3$$", desc_l1)
 
-	return _limpiar_zpl("\n".join(etiquetas))
+	return _limpiar_zpl(_aplicar_cantidad(zpl, formato_doc.lenguaje, cantidad))
 
 
 @frappe.whitelist()
