@@ -181,6 +181,13 @@ doctype_list_js = {
 # 	"frappe.desk.doctype.event.event.get_events": "etiba.event.get_events"
 # }
 #
+
+# El escaneo de ERPNext solo mira Item Barcode / Serial No / Batch; las etiquetas
+# con identificador_tipo "Codigo" llevan el item_code en el QR y no se encontraban.
+override_whitelisted_methods = {
+	"erpnext.stock.utils.scan_barcode": "etiba.api.escaneo.scan_barcode",
+}
+
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,
 # along with any modifications made in other Frappe apps
